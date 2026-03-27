@@ -149,8 +149,8 @@ export default function App() {
       .flatMap(lang => page.translations[lang].paragraphs.map(p => p.text))
       .join(' ');
     
-    // Regex to extract emojis
-    const emojiRegex = /\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu;
+    // Regex to extract emojis - using Extended_Pictographic for better coverage
+    const emojiRegex = /\p{Extended_Pictographic}/gu;
     const matches = allText.match(emojiRegex) || [];
     // Filter out duplicates and only include those we have in our glossary
     return Array.from(new Set(matches)).filter(emoji => EMOJI_GLOSSARY[emoji]);
@@ -992,6 +992,36 @@ export default function App() {
             </div>
           </button>
         </footer>
+
+        {/* Sticky PDF CTA */}
+        <AnimatePresence>
+          {selectedEbook?.id === 'comptines-francaises' && (
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              className="fixed bottom-28 lg:bottom-8 right-8 z-50"
+            >
+              <motion.a
+                href="https://storage.googleapis.com/static.antigravity.dev/ais-build/pdf-screenshots/ba6dd985-8c6a-4ae3-97da-73eaa2f7f9e2/1.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3 bg-gold dark:bg-dark-gold text-white dark:text-dark-paper px-6 py-4 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl shadow-gold/40 no-underline border-2 border-white dark:border-dark-card group"
+              >
+                <div className="relative">
+                  <Download className="w-5 h-5 group-hover:animate-bounce" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full border border-white dark:border-dark-card" />
+                </div>
+                <div className="flex flex-col items-start leading-none">
+                  <span className="text-[10px] opacity-70 mb-0.5">Full Songbook</span>
+                  <span className="text-sm">PDF • $19</span>
+                </div>
+              </motion.a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
       
       {/* Cheat Sheet Sidebar */}
