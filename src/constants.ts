@@ -191,6 +191,18 @@ export const UI_TRANSLATIONS: Record<string, Record<string, string>> = {
     zh: '下载 PDF - 19 美元',
     ru: 'Скачать PDF - 19 $',
   },
+  fullSongbook: {
+    en: 'Full Songbook',
+    hr: 'Cijela pjesmarica',
+    es: 'Cancionero completo',
+    de: 'Vollständiges Liederbuch',
+    fr: 'Recueil complet',
+    it: 'Canzoniere completo',
+    ar: 'كتاب الأغاني الكامل',
+    tr: 'Tam Şarkı Kitabı',
+    zh: '完整歌集',
+    ru: 'Полный песенник',
+  },
   learnMore: {
     en: 'Learn More',
     hr: 'Saznajte više',

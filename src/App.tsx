@@ -998,8 +998,13 @@ export default function App() {
           {selectedEbook?.id === 'comptines-francaises' && (
             <motion.div
               initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={{ 
+                y: 0, 
+                opacity: 1,
+                x: isCheatSheetOpen ? -320 : 0 
+              }}
               exit={{ y: 100, opacity: 0 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 100 }}
               className="fixed bottom-28 lg:bottom-8 right-8 z-50"
             >
               <motion.a
@@ -1015,7 +1020,7 @@ export default function App() {
                   <div className="absolute -top-1 -right-1 w-2 h-2 bg-rose-500 rounded-full border border-white dark:border-dark-card" />
                 </div>
                 <div className="flex flex-col items-start leading-none">
-                  <span className="text-[10px] opacity-70 mb-0.5">Full Songbook</span>
+                  <span className="text-[10px] opacity-70 mb-0.5">{t('fullSongbook')}</span>
                   <span className="text-sm">PDF • $19</span>
                 </div>
               </motion.a>
