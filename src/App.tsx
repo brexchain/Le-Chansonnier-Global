@@ -718,71 +718,6 @@ export default function App() {
                   <div className="h-1 w-12 bg-gold dark:bg-dark-gold mx-auto rounded-full opacity-30"></div>
                 </div>
 
-                {/* Emoji Glossary - Moved to First Place */}
-                {pageEmojis.length > 0 && (
-                  <div id="emoji-glossary" className="mb-16 pb-12 border-b border-ink/5 dark:border-dark-border">
-                    <div className="flex items-center gap-4 mb-8">
-                      <div className="p-2.5 bg-gold/10 dark:bg-dark-gold/10 rounded-xl">
-                        <Sparkles className="w-5 h-5 text-gold dark:text-dark-gold" />
-                      </div>
-                      <h3 className="text-xl font-serif font-bold text-ink dark:text-dark-ink tracking-tight">{t('glossary')}</h3>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                      {pageEmojis.map(emoji => {
-                        const glossaryEntry = EMOJI_GLOSSARY[emoji];
-                        if (!glossaryEntry) return null;
-                        
-                        const sortedGlossaryLangs = Object.keys(glossaryEntry).sort((a, b) => {
-                          if (a === displayLanguage) return -1;
-                          if (b === displayLanguage) return 1;
-                          return 0;
-                        });
-
-                        return (
-                          <motion.div 
-                            key={emoji}
-                            whileHover={{ y: -4, borderColor: 'rgba(212, 175, 55, 0.4)', backgroundColor: 'rgba(212, 175, 55, 0.05)' }}
-                            className="bg-white dark:bg-dark-card p-4 rounded-2xl border border-ink/5 dark:border-dark-border flex flex-col items-center text-center transition-all shadow-lg group cursor-pointer relative overflow-hidden"
-                          >
-                            <span className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{emoji}</span>
-                            <div className="space-y-2 w-full">
-                              {sortedGlossaryLangs.map(lang => {
-                                const info = glossaryEntry[lang];
-                                if (!info) return null;
-                                return (
-                                  <div 
-                                    key={lang} 
-                                    className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg transition-colors ${displayLanguage === lang ? 'bg-gold/10 dark:bg-dark-gold/10 border border-gold/20' : 'hover:bg-paper dark:hover:bg-dark-paper border border-transparent'}`}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setDisplayLanguage(lang);
-                                      if (!visibleLanguages.includes(lang)) {
-                                        setVisibleLanguages(prev => [...prev, lang]);
-                                      }
-                                      speak(info.name, lang);
-                                    }}
-                                  >
-                                    <div className="flex items-center gap-1">
-                                      <img 
-                                        src={`https://flagcdn.com/w40/${LANGUAGE_FLAGS[lang] || 'un'}.png`}
-                                        alt={lang}
-                                        className="w-3 h-2 object-cover rounded-sm opacity-60 group-hover:opacity-100"
-                                        referrerPolicy="no-referrer"
-                                      />
-                                      <span className="text-[9px] font-bold uppercase text-gold dark:text-dark-gold opacity-60">{lang}</span>
-                                      <span className="text-xs font-serif font-bold text-ink dark:text-dark-ink leading-tight">{info.name}</span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                   <AnimatePresence mode="popLayout">
                     {sortedVisibleLanguages.map(langCode => {
@@ -950,6 +885,71 @@ export default function App() {
                       </p>
                     </div>
                   </motion.div>
+                )}
+
+                {/* Emoji Glossary - Moved to Bottom */}
+                {pageEmojis.length > 0 && (
+                  <div id="emoji-glossary" className="mt-32 pt-12 border-t border-ink/5 dark:border-dark-border">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="p-2.5 bg-gold/10 dark:bg-dark-gold/10 rounded-xl">
+                        <Sparkles className="w-5 h-5 text-gold dark:text-dark-gold" />
+                      </div>
+                      <h3 className="text-xl font-serif font-bold text-ink dark:text-dark-ink tracking-tight">{t('glossary')}</h3>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                      {pageEmojis.map(emoji => {
+                        const glossaryEntry = EMOJI_GLOSSARY[emoji];
+                        if (!glossaryEntry) return null;
+                        
+                        const sortedGlossaryLangs = Object.keys(glossaryEntry).sort((a, b) => {
+                          if (a === displayLanguage) return -1;
+                          if (b === displayLanguage) return 1;
+                          return 0;
+                        });
+
+                        return (
+                          <motion.div 
+                            key={emoji}
+                            whileHover={{ y: -4, borderColor: 'rgba(212, 175, 55, 0.4)', backgroundColor: 'rgba(212, 175, 55, 0.05)' }}
+                            className="bg-white dark:bg-dark-card p-4 rounded-2xl border border-ink/5 dark:border-dark-border flex flex-col items-center text-center transition-all shadow-lg group cursor-pointer relative overflow-hidden"
+                          >
+                            <span className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{emoji}</span>
+                            <div className="space-y-2 w-full">
+                              {sortedGlossaryLangs.map(lang => {
+                                const info = glossaryEntry[lang];
+                                if (!info) return null;
+                                return (
+                                  <div 
+                                    key={lang} 
+                                    className={`flex flex-col items-center gap-0.5 p-1.5 rounded-lg transition-colors ${displayLanguage === lang ? 'bg-gold/10 dark:bg-dark-gold/10 border border-gold/20' : 'hover:bg-paper dark:hover:bg-dark-paper border border-transparent'}`}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setDisplayLanguage(lang);
+                                      if (!visibleLanguages.includes(lang)) {
+                                        setVisibleLanguages(prev => [...prev, lang]);
+                                      }
+                                      speak(info.name, lang);
+                                    }}
+                                  >
+                                    <div className="flex items-center gap-1">
+                                      <img 
+                                        src={`https://flagcdn.com/w40/${LANGUAGE_FLAGS[lang] || 'un'}.png`}
+                                        alt={lang}
+                                        className="w-3 h-2 object-cover rounded-sm opacity-60 group-hover:opacity-100"
+                                        referrerPolicy="no-referrer"
+                                      />
+                                      <span className="text-[9px] font-bold uppercase text-gold dark:text-dark-gold opacity-60">{lang}</span>
+                                      <span className="text-xs font-serif font-bold text-ink dark:text-dark-ink leading-tight">{info.name}</span>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 )}
               </motion.div>
             ) : (
