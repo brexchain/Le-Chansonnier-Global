@@ -3,10 +3,10 @@ import { Ebook } from './types';
 export const EBOOKS: Ebook[] = [
   {
     id: 'comptines-francaises',
-    title: '25 French Songs with Translations',
+    title: 'Melodic & Harmonic: The Multilingual French Songbook',
     author: 'Traditional French Nursery Rhymes',
     coverEmoji: '🇫🇷🎶',
-    description: 'A multilingual songbook featuring 25 French classics with interactive chords and translations in multiple languages.',
+    description: 'A multilingual learning book featuring 25 French classics with interactive chords and translations in multiple languages. Perfect for melodic and harmonic exploration.',
     isRecommended: true,
     pages: [
       {

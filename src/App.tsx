@@ -304,15 +304,29 @@ export default function App() {
       <AnimatePresence>
         {showQuiz && <ChordQuiz onClose={() => setShowQuiz(false)} />}
       </AnimatePresence>
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-ink/40 backdrop-blur-sm z-30 lg:hidden"
+          />
+        )}
+      </AnimatePresence>
       
       {/* Sidebar */}
       <motion.aside 
         initial={false}
         animate={{ 
           width: isSidebarOpen ? 320 : 0,
-          opacity: isSidebarOpen ? 1 : 0
+          opacity: isSidebarOpen ? 1 : 0,
+          x: isSidebarOpen ? 0 : -320
         }}
-        className={`bg-white dark:bg-dark-card border-r border-ink/5 dark:border-dark-border flex flex-col h-full z-40 relative overflow-hidden shadow-2xl`}
+        className={`bg-white dark:bg-dark-card border-r border-ink/5 dark:border-dark-border flex flex-col h-full z-40 fixed lg:relative overflow-hidden shadow-2xl`}
       >
         <div className="p-6 border-b border-ink/5 dark:border-dark-border flex items-center justify-between bg-paper/30 dark:bg-dark-paper/30">
           <div className="flex items-center gap-3">
@@ -321,7 +335,7 @@ export default function App() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-2xl font-serif font-bold text-olive dark:text-dark-olive tracking-tight leading-none">Chansonnier</h1>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold dark:text-dark-gold mt-1">Le Chansonnier Global</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold dark:text-dark-gold mt-1">Melodic & Harmonic</span>
             </div>
           </div>
           <button 
@@ -374,12 +388,12 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   {selectedEbookId === ebook.id && (
                     <span className="text-[9px] font-bold uppercase tracking-widest bg-olive/10 dark:bg-dark-olive/10 text-olive dark:text-dark-olive px-2 py-0.5 rounded-full">
-                      Reading
+                      {t('reading')}
                     </span>
                   )}
                   {ebook.isRecommended && (
                     <span className="text-[9px] font-bold uppercase tracking-widest bg-gold/10 dark:bg-dark-gold/10 text-gold dark:text-dark-gold px-2 py-0.5 rounded-full">
-                      Recommended
+                      {t('recommended')}
                     </span>
                   )}
                   <button 
@@ -401,31 +415,8 @@ export default function App() {
         </div>
 
         <div className="p-6 bg-paper/30 dark:bg-dark-paper/30 border-t border-ink/5 dark:border-dark-border space-y-6">
-          {/* Premium CTA Card */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-5 bg-gradient-to-br from-gold to-gold/80 dark:from-dark-gold dark:to-dark-gold/80 rounded-[2rem] shadow-xl shadow-gold/20 text-white dark:text-dark-paper overflow-hidden relative group cursor-pointer"
-          >
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
-            <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-                  <ShoppingCart className="w-4 h-4" />
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Premium Edition</span>
-              </div>
-              <h4 className="text-lg font-black leading-tight mb-2">25 Songs PDF Book</h4>
-              <p className="text-[11px] opacity-90 mb-4 leading-relaxed font-medium">Printable chords & translations for all songs in one beautiful book.</p>
-              <button className="w-full py-3 bg-white dark:bg-dark-paper text-gold dark:text-dark-gold rounded-2xl font-black text-xs flex items-center justify-center gap-2 hover:bg-paper dark:hover:bg-white transition-all shadow-lg active:scale-95">
-                <Download className="w-4 h-4" />
-                DOWNLOAD FOR $19
-              </button>
-            </div>
-          </motion.div>
-
           <div className="space-y-4">
-            <Metronome isDarkMode={isDarkMode} />
+            <Metronome isDarkMode={isDarkMode} displayLanguage={displayLanguage} />
             
             <div className="p-5 bg-white dark:bg-dark-card rounded-[2rem] border border-ink/5 dark:border-dark-border shadow-sm">
               <div className="flex items-center justify-between mb-4">
@@ -433,7 +424,7 @@ export default function App() {
                   <div className="p-1.5 bg-gold/10 dark:bg-dark-gold/10 rounded-lg">
                     <Languages className="w-4 h-4 text-gold dark:text-dark-gold" />
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink/40 dark:text-dark-ink/40">Language</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink/40 dark:text-dark-ink/40">{t('language')}</span>
                 </div>
               </div>
               
@@ -492,7 +483,7 @@ export default function App() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-lg font-serif font-bold text-olive dark:text-dark-olive tracking-tight leading-none">Chansonnier</span>
-                  <span className="text-[8px] font-bold uppercase tracking-widest text-gold dark:text-dark-gold">Le Chansonnier Global</span>
+                  <span className="text-[8px] font-bold uppercase tracking-widest text-gold dark:text-dark-gold">Melodic & Harmonic</span>
                 </div>
               </div>
             )}
@@ -504,14 +495,14 @@ export default function App() {
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${isDarkMode ? 'bg-white dark:bg-dark-card text-olive dark:text-dark-gold shadow-sm' : 'text-ink/40 dark:text-dark-ink/40'}`}
               >
                 <Moon className="w-3 h-3" />
-                Dark
+                {t('dark')}
               </button>
               <button 
                 onClick={() => setIsDarkMode(false)}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${!isDarkMode ? 'bg-white dark:bg-dark-card text-olive dark:text-dark-gold shadow-sm' : 'text-ink/40 dark:text-dark-ink/40'}`}
               >
                 <Sun className="w-3 h-3" />
-                Light
+                {t('light')}
               </button>
             </div>
           </div>
@@ -544,14 +535,14 @@ export default function App() {
               }`}
             >
               <Music className="w-4 h-4" />
-              Chords
+              {t('chords')}
             </button>
             <button 
               onClick={() => setShowQuiz(true)}
               className="flex items-center gap-2 px-4 py-2 bg-gold/10 dark:bg-dark-gold/10 text-gold dark:text-dark-gold rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold/20 transition-all border border-gold/20"
             >
               <Gamepad2 className="w-4 h-4" />
-              Quiz
+              {t('quiz')}
             </button>
           </div>
         </header>
@@ -700,7 +691,7 @@ export default function App() {
                     <h1 className="text-5xl font-serif font-bold mb-2 text-olive dark:text-dark-olive tracking-tight">{selectedEbook.title}</h1>
                     <div className="flex flex-col items-center mb-6">
                       <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold dark:text-dark-gold">
-                        {selectedEbook.pages?.[currentPageIndex]?.translations?.[displayLanguage]?.languageName || 'Le Chansonnier Global'}
+                        {selectedEbook.pages?.[currentPageIndex]?.translations?.[displayLanguage]?.languageName || 'Melodic & Harmonic'}
                       </span>
                       <div className="h-px w-12 bg-gold/30 mt-2"></div>
                     </div>
@@ -911,14 +902,21 @@ export default function App() {
                 </AnimatePresence>
               </div>
 
-                {/* End of Ebook CTA */}
-                {currentPageIndex === selectedEbook.pages.length - 1 && selectedEbook.id === 'comptines-francaises' && (
+                {/* End of Ebook CTA - Now Always Visible at Bottom of Scroll for this Ebook */}
+                {selectedEbook.id === 'comptines-francaises' && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-24 p-12 bg-white dark:bg-dark-card rounded-[3rem] border-2 border-dashed border-gold/30 dark:border-dark-gold/30 text-center shadow-2xl relative overflow-hidden"
+                    className="mt-32 p-12 bg-white dark:bg-dark-card rounded-[3rem] border-2 border-dashed border-gold/30 dark:border-dark-gold/30 text-center shadow-2xl relative overflow-hidden group"
                   >
+                    {/* PDF Background with Overlay */}
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-20 transition-opacity duration-700"
+                      style={{ backgroundImage: 'url(https://storage.googleapis.com/static.antigravity.dev/ais-build/pdf-screenshots/ba6dd985-8c6a-4ae3-97da-73eaa2f7f9e2/1.png)' }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/95 to-white/80 dark:from-dark-card/80 dark:via-dark-card/95 dark:to-dark-card/80" />
+
                     {/* Decorative elements */}
                     <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
                     <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold/5 dark:bg-dark-gold/5 rounded-full blur-3xl" />
@@ -928,22 +926,27 @@ export default function App() {
                       <div className="w-20 h-20 bg-gold/10 dark:bg-dark-gold/10 rounded-full flex items-center justify-center mx-auto mb-8">
                         <ShoppingCart className="w-10 h-10 text-gold dark:text-dark-gold" />
                       </div>
-                      <h3 className="text-4xl font-serif font-bold text-ink dark:text-dark-ink mb-4">Love these songs?</h3>
+                      <h3 className="text-4xl font-serif font-bold text-ink dark:text-dark-ink mb-4">{t('premiumTitle')}</h3>
                       <p className="text-lg text-ink/60 dark:text-dark-ink/60 mb-10 max-w-xl mx-auto leading-relaxed">
-                        Take the music with you! Get the complete <span className="text-gold dark:text-dark-gold font-bold">"25 French Songs with Translations"</span> PDF book with all lyrics, chords, and translations in a beautiful printable format.
+                        {t('premiumDesc')}
                       </p>
                       <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                        <button className="px-10 py-5 bg-gold dark:bg-dark-gold text-white dark:text-dark-paper rounded-2xl font-bold text-lg shadow-2xl shadow-gold/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                        <a 
+                          href="https://storage.googleapis.com/static.antigravity.dev/ais-build/pdf-screenshots/ba6dd985-8c6a-4ae3-97da-73eaa2f7f9e2/1.png"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-10 py-5 bg-gold dark:bg-dark-gold text-white dark:text-dark-paper rounded-2xl font-bold text-lg shadow-2xl shadow-gold/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-3 no-underline"
+                        >
                           <Download className="w-6 h-6" />
-                          Download PDF - $19
-                        </button>
+                          {t('downloadPdf')}
+                        </a>
                         <button className="px-10 py-5 bg-ink/5 dark:bg-dark-ink/5 text-ink dark:text-dark-ink rounded-2xl font-bold text-lg hover:bg-ink/10 dark:hover:bg-dark-ink/10 transition-all flex items-center gap-3">
-                          Learn More
+                          {t('learnMore')}
                           <ExternalLink className="w-5 h-5" />
                         </button>
                       </div>
                       <p className="mt-8 text-xs text-ink/30 dark:text-dark-ink/30 uppercase tracking-widest font-bold">
-                        Secure Checkout • Instant Access • Printable Format
+                        {t('secureCheckout')}
                       </p>
                     </div>
                   </motion.div>
@@ -1005,7 +1008,7 @@ export default function App() {
                 <div className="p-2 bg-gold/10 rounded-xl">
                   <Music className="w-5 h-5 text-gold" />
                 </div>
-                <h3 className="font-serif font-bold text-xl text-ink dark:text-dark-ink">Cheat Sheet</h3>
+                <h3 className="font-serif font-bold text-xl text-ink dark:text-dark-ink">{t('cheatSheet')}</h3>
               </div>
               <button 
                 onClick={() => setIsCheatSheetOpen(false)}
@@ -1019,7 +1022,7 @@ export default function App() {
               {uniqueChords.length > 0 ? (
                 <div className="space-y-8">
                   <p className="text-xs font-bold text-ink/40 dark:text-dark-ink/40 uppercase tracking-widest">
-                    Chords in this page
+                    {t('chordsInPage')}
                   </p>
                   <div className="grid grid-cols-1 gap-6">
                     {uniqueChords.map(chord => {

@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Square, ChevronUp, ChevronDown, Music } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { UI_TRANSLATIONS } from '../constants';
 
 interface MetronomeProps {
   className?: string;
   isDarkMode?: boolean;
+  displayLanguage?: string;
 }
 
-export const Metronome: React.FC<MetronomeProps> = ({ className, isDarkMode }) => {
+export const Metronome: React.FC<MetronomeProps> = ({ className, isDarkMode, displayLanguage = 'en' }) => {
   const [bpm, setBpm] = useState(120);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBeat, setCurrentBeat] = useState(0);
@@ -86,6 +88,10 @@ export const Metronome: React.FC<MetronomeProps> = ({ className, isDarkMode }) =
     setBpm(prev => Math.max(40, Math.min(240, prev + amount)));
   };
 
+  const t = (key: string) => {
+    return UI_TRANSLATIONS[key]?.[displayLanguage] || UI_TRANSLATIONS[key]?.['en'] || key;
+  };
+
   return (
     <div className={`flex items-center gap-4 bg-white dark:bg-dark-card border border-ink/5 dark:border-dark-border rounded-2xl px-5 py-2.5 shadow-xl transition-all ${className}`}>
       <div className="flex items-center gap-3">
@@ -93,10 +99,10 @@ export const Metronome: React.FC<MetronomeProps> = ({ className, isDarkMode }) =
           <Music className={`w-4 h-4 ${isPlaying ? 'text-gold dark:text-dark-gold animate-pulse' : 'text-ink/30 dark:text-dark-ink/30'}`} />
         </div>
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-ink/40 dark:text-dark-ink/40 uppercase tracking-widest leading-none mb-1.5">Metronome</span>
+          <span className="text-[10px] font-bold text-ink/40 dark:text-dark-ink/40 uppercase tracking-widest leading-none mb-1.5">{t('metronome')}</span>
           <div className="flex items-center gap-2">
             <span className="text-sm font-mono font-bold text-ink dark:text-dark-ink w-8">{bpm}</span>
-            <span className="text-[10px] text-ink/40 dark:text-dark-ink/40 font-bold uppercase tracking-widest">BPM</span>
+            <span className="text-[10px] text-ink/40 dark:text-dark-ink/40 font-bold uppercase tracking-widest">{t('bpm')}</span>
           </div>
         </div>
       </div>
